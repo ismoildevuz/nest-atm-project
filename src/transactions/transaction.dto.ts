@@ -7,7 +7,7 @@ import {
   Length,
   Min,
 } from 'class-validator';
-import { UserDto } from '../users/user.dto';
+import { UserDto } from '../users/dto/user.dto';
 import { CardDto } from '../cards/card.dto';
 
 export enum TransactionTypeEnum {

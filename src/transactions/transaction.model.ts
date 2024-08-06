@@ -12,7 +12,7 @@ import {
 import { DataTypes } from 'sequelize';
 import { TransactionDto, TransactionTypeEnum } from './transaction.dto';
 import { UserModel } from '../users/user.model';
-import { UserDto } from '../users/user.dto';
+import { UserDto } from '../users/dto/user.dto';
 import { CardModel } from '../cards/card.model';
 import { CardDto } from '../cards/card.dto';
 

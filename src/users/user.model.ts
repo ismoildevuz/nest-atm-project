@@ -9,7 +9,7 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
-import { UserDto } from './user.dto';
+import { UserDto } from './dto/user.dto';
 import { CardModel } from '../cards/card.model';
 import { CardDto } from '../cards/card.dto';
 import { TransactionModel } from '../transactions/transaction.model';
@@ -22,7 +22,7 @@ export class UserModel extends Model<UserDto, UserDto> {
   declare id: string;
 
   @Column({ allowNull: false, unique: true })
-  declare username: string;
+  declare phoneNumber: string;
 
   @Column({ allowNull: false })
   declare password: string;
@@ -33,10 +33,7 @@ export class UserModel extends Model<UserDto, UserDto> {
   @Column({ allowNull: false })
   declare lastName: string;
 
-  @Column
-  declare phoneNumber: string;
-
-  @Column
+  @Column({ defaultValue: 0 })
   declare balance: number;
 
   @HasMany(() => CardModel)

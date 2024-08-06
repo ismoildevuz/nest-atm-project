@@ -13,7 +13,7 @@ import {
 import { DataTypes } from 'sequelize';
 import { CardDto } from './card.dto';
 import { UserModel } from '../users/user.model';
-import { UserDto } from '../users/user.dto';
+import { UserDto } from '../users/dto/user.dto';
 import { TransactionModel } from '../transactions/transaction.model';
 import { TransactionDto } from '../transactions/transaction.dto';
 
