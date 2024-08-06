@@ -2,7 +2,7 @@ import {
   Column,
   Model,
   PrimaryKey,
-  // HasMany,
+  HasMany,
   Table,
   CreatedAt,
   DeletedAt,
@@ -14,6 +14,8 @@ import { DataTypes } from 'sequelize';
 import { CardDto } from './card.dto';
 import { UserModel } from '../users/user.model';
 import { UserDto } from '../users/user.dto';
+import { TransactionModel } from '../transactions/transaction.model';
+import { TransactionDto } from '../transactions/transaction.dto';
 
 @Table({ tableName: 'cards', underscored: true })
 export class CardModel extends Model<CardDto, CardDto> {
@@ -43,6 +45,9 @@ export class CardModel extends Model<CardDto, CardDto> {
   @BelongsTo(() => UserModel)
   declare user: UserDto;
 
+  @HasMany(() => TransactionModel)
+  declare transactions: TransactionDto[];
+
   @CreatedAt
   declare createdAt: string;
 
@@ -51,7 +56,4 @@ export class CardModel extends Model<CardDto, CardDto> {
 
   @DeletedAt
   declare deletedAt?: string;
-
-  // @HasMany(() => TransactionModel)
-  // declare transactions: TransactionDto[];
 }

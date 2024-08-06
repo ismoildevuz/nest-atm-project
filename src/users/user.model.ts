@@ -12,6 +12,8 @@ import { DataTypes } from 'sequelize';
 import { UserDto } from './user.dto';
 import { CardModel } from '../cards/card.model';
 import { CardDto } from '../cards/card.dto';
+import { TransactionModel } from '../transactions/transaction.model';
+import { TransactionDto } from '../transactions/transaction.dto';
 
 @Table({ tableName: 'users', underscored: true })
 export class UserModel extends Model<UserDto, UserDto> {
@@ -40,6 +42,9 @@ export class UserModel extends Model<UserDto, UserDto> {
   @HasMany(() => CardModel)
   declare cards: CardDto[];
 
+  @HasMany(() => TransactionModel)
+  declare transactions: TransactionDto[];
+
   @CreatedAt
   declare createdAt: string;
 
@@ -48,7 +53,4 @@ export class UserModel extends Model<UserDto, UserDto> {
 
   @DeletedAt
   declare deletedAt?: string;
-
-  // @HasMany(() => TransactionModel)
-  // declare transactions: TransactionDto[];
 }
