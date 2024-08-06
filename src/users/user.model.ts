@@ -2,7 +2,7 @@ import {
   Column,
   Model,
   PrimaryKey,
-  // HasMany,
+  HasMany,
   Table,
   CreatedAt,
   DeletedAt,
@@ -10,6 +10,8 @@ import {
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import { UserDto } from './user.dto';
+import { CardModel } from '../cards/card.model';
+import { CardDto } from '../cards/card.dto';
 
 @Table({ tableName: 'users', underscored: true })
 export class UserModel extends Model<UserDto, UserDto> {
@@ -35,6 +37,9 @@ export class UserModel extends Model<UserDto, UserDto> {
   @Column
   declare balance: number;
 
+  @HasMany(() => CardModel)
+  declare cards: CardDto[];
+
   @CreatedAt
   declare createdAt: string;
 
@@ -43,9 +48,6 @@ export class UserModel extends Model<UserDto, UserDto> {
 
   @DeletedAt
   declare deletedAt?: string;
-
-  // @HasMany(() => CardModel)
-  // declare cards: CardDto[];
 
   // @HasMany(() => TransactionModel)
   // declare transactions: TransactionDto[];

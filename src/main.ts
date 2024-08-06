@@ -14,12 +14,11 @@ async function bootstrap() {
   app.enableCors({ origin: true, credentials: true });
   app.set('trust proxy', 'loopback');
 
-  app.setGlobalPrefix('api');
   const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api/docs', app, document);
+  SwaggerModule.setup('docs', app, document);
 
   await app.listen(process.env.HTTP_PORT, process.env.HTTP_HOST);
-  console.log(console.error(`app run on: ${await app.getUrl()}`));
+  console.log(`\x1b[33m\napp run on: ${await app.getUrl()} \x1b[0m`);
 }
 
 bootstrap();
