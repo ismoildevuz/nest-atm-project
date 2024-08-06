@@ -35,7 +35,7 @@ export class CardModel extends Model<CardDto, CardDto> {
   @Column({ type: DataTypes.STRING(4), allowNull: false })
   declare cvv: string;
 
-  @Column({ type: DataTypes.STRING(4), allowNull: false })
+  @Column({ allowNull: false })
   declare pin: string;
 
   @ForeignKey(() => UserModel)
