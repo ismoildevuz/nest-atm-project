@@ -40,8 +40,6 @@ export class UserDto {
   @IsString({ groups: [UserDtoGroup.REGISTER, UserDtoGroup.UPDATE] })
   declare lastName: string;
 
-  declare balance?: string;
-
   declare cards: CardDto[];
 
   declare transactions: TransactionDto[];

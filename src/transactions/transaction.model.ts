@@ -29,10 +29,17 @@ export class TransactionModel extends Model<TransactionDto, TransactionDto> {
   declare amount: number;
 
   @ForeignKey(() => CardModel)
+  @Column({ type: DataTypes.UUID })
+  declare transferCardId?: string;
+
+  @BelongsTo(() => CardModel, 'transferCardId')
+  declare transferCard?: CardDto;
+
+  @ForeignKey(() => CardModel)
   @Column({ type: DataTypes.UUID, allowNull: false })
   declare cardId: string;
 
-  @BelongsTo(() => CardModel)
+  @BelongsTo(() => CardModel, 'cardId')
   declare card: CardDto;
 
   @ForeignKey(() => UserModel)

@@ -38,6 +38,9 @@ export class CardModel extends Model<CardDto, CardDto> {
   @Column({ allowNull: false })
   declare pin: string;
 
+  @Column({ defaultValue: 0 })
+  declare balance: number;
+
   @ForeignKey(() => UserModel)
   @Column({ type: DataTypes.UUID, allowNull: false })
   declare userId: string;
@@ -45,7 +48,7 @@ export class CardModel extends Model<CardDto, CardDto> {
   @BelongsTo(() => UserModel)
   declare user: UserDto;
 
-  @HasMany(() => TransactionModel)
+  @HasMany(() => TransactionModel, 'cardId')
   declare transactions: TransactionDto[];
 
   @CreatedAt

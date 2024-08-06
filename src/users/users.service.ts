@@ -59,7 +59,6 @@ export class UsersService {
       'firstName',
       'lastName',
       'phoneNumber',
-      'balance',
     ],
   ) {
     return await this.model

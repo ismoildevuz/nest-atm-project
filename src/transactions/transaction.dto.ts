@@ -2,13 +2,17 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEnum,
   IsNumber,
+  IsOptional,
   IsString,
   IsUUID,
   Length,
+  Max,
   Min,
 } from 'class-validator';
 import { UserDto } from '../users/dto/user.dto';
 import { CardDto } from '../cards/card.dto';
+import { CardModel } from '../cards/card.model';
+import { Transform } from 'class-transformer';
 
 export enum TransactionTypeEnum {
   DEPOSIT = 'deposit',
@@ -23,6 +27,52 @@ export class TransactionDtoGroup {
   static readonly PAGINATION = 'PAGINATION';
 }
 
+export class TransactionPagingDto {
+  @ApiProperty({ type: 'number', example: 10, required: false })
+  @Transform(({ value }) => Number(value))
+  @IsNumber(
+    { allowInfinity: false, allowNaN: false, maxDecimalPlaces: 0 },
+    { groups: [TransactionDtoGroup.PAGINATION] },
+  )
+  @Min(1, { groups: [TransactionDtoGroup.PAGINATION] })
+  @Max(100, { groups: [TransactionDtoGroup.PAGINATION] })
+  declare limit: number;
+
+  @ApiProperty({ type: 'number', example: 1, required: false })
+  @Transform(({ value }) => Number(value))
+  @IsNumber(
+    { allowInfinity: false, allowNaN: false, maxDecimalPlaces: 0 },
+    { groups: [TransactionDtoGroup.PAGINATION] },
+  )
+  @Min(1, { groups: [TransactionDtoGroup.PAGINATION] })
+  declare page: number;
+
+  @ApiProperty({
+    type: 'enum',
+    enum: TransactionTypeEnum,
+    example: TransactionTypeEnum.DEPOSIT,
+    required: false,
+  })
+  @IsOptional({ groups: [TransactionDtoGroup.PAGINATION] })
+  @IsEnum(TransactionTypeEnum, {
+    groups: [TransactionDtoGroup.PAGINATION],
+    message: `Transaction type enum values: ${Object.values(TransactionTypeEnum).join(', ')}`,
+  })
+  declare type: TransactionTypeEnum;
+
+  @ApiProperty({ type: 'string', example: null, required: false })
+  @IsOptional({ groups: [TransactionDtoGroup.PAGINATION] })
+  @IsUUID('4', { groups: [TransactionDtoGroup.PAGINATION] })
+  declare transferCardId?: string;
+
+  @ApiProperty({ type: 'string', example: null, required: false })
+  @IsOptional({ groups: [TransactionDtoGroup.PAGINATION] })
+  @IsUUID('4', { groups: [TransactionDtoGroup.PAGINATION] })
+  declare cardId?: string;
+
+  declare userId?: string;
+}
+
 export class TransactionDto {
   declare id: string;
 
@@ -33,7 +83,7 @@ export class TransactionDto {
   })
   declare type: TransactionTypeEnum;
 
-  @ApiProperty({ type: 'string', example: 500 })
+  @ApiProperty({ type: 'number', example: 500 })
   @IsNumber({ allowNaN: false }, { groups: [TransactionDtoGroup.CREATE] })
   @Min(0, { groups: [TransactionDtoGroup.CREATE] })
   declare amount: number;
@@ -44,10 +94,21 @@ export class TransactionDto {
   declare pin: string;
 
   @ApiProperty({ type: 'string', example: '12345678' })
+  @IsOptional({ groups: [TransactionDtoGroup.CREATE] })
+  @IsUUID('4', { groups: [TransactionDtoGroup.CREATE] })
+  declare transferCardId?: string;
+
+  declare transferCard: CardDto;
+
+  declare transferCardModel: CardModel;
+
+  @ApiProperty({ type: 'string', example: '12345678' })
   @IsUUID('4', { groups: [TransactionDtoGroup.CREATE] })
   declare cardId: string;
 
   declare card: CardDto;
+
+  declare cardModel: CardModel;
 
   declare userId: string;
 

@@ -3,7 +3,6 @@ export interface IReqUserInterface {
   firstName: string;
   lastName: string;
   phoneNumber: string;
-  balance: string;
 }
 
 declare module 'express' {

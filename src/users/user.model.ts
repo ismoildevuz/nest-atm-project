@@ -33,9 +33,6 @@ export class UserModel extends Model<UserDto, UserDto> {
   @Column({ allowNull: false })
   declare lastName: string;
 
-  @Column({ defaultValue: 0 })
-  declare balance: number;
-
   @HasMany(() => CardModel)
   declare cards: CardDto[];
 

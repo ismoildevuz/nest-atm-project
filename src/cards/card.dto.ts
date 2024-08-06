@@ -29,6 +29,8 @@ export class CardDto {
   @Length(4, 4, { groups: [CardDtoGroup.CREATE, CardDtoGroup.UPDATE] })
   declare pin: string;
 
+  declare balance?: number;
+
   declare userId: string;
 
   declare user: UserDto;
