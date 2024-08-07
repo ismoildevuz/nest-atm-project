@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString, IsUUID, Length } from 'class-validator';
 import { UserDto } from '../users/dto/user.dto';
 import { TransactionDto } from '../transactions/transaction.dto';
+import { LoanDto } from '../loans/loan.dto';
 
 export class CardDtoGroup {
   static readonly CREATE = 'CREATE';
@@ -36,6 +37,8 @@ export class CardDto {
   declare user: UserDto;
 
   declare transactions: TransactionDto[];
+
+  declare loans: LoanDto[];
 
   declare createdAt?: string;
 

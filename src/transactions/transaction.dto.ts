@@ -8,11 +8,13 @@ import {
   Length,
   Max,
   Min,
+  ValidateNested,
 } from 'class-validator';
 import { UserDto } from '../users/dto/user.dto';
 import { CardDto } from '../cards/card.dto';
 import { CardModel } from '../cards/card.model';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
+import { LoanDto } from '../loans/loan.dto';
 
 export enum TransactionTypeEnum {
   DEPOSIT = 'deposit',
@@ -83,9 +85,10 @@ export class TransactionDto {
   })
   declare type: TransactionTypeEnum;
 
-  @ApiProperty({ type: 'number', example: 500 })
+  @ApiProperty({ type: 'number', example: 1000 })
   @IsNumber({ allowNaN: false }, { groups: [TransactionDtoGroup.CREATE] })
-  @Min(0, { groups: [TransactionDtoGroup.CREATE] })
+  @Max(100000, { groups: [TransactionDtoGroup.CREATE] })
+  @Min(1, { groups: [TransactionDtoGroup.CREATE] })
   declare amount: number;
 
   @ApiProperty({ type: 'string', example: '1234' })
@@ -93,22 +96,31 @@ export class TransactionDto {
   @Length(4, 4, { groups: [TransactionDtoGroup.CREATE] })
   declare pin: string;
 
+  declare loanId?: string;
+
+  @ApiProperty({ type: LoanDto })
+  @IsOptional({ groups: [TransactionDtoGroup.CREATE] })
+  @ValidateNested({ groups: [TransactionDtoGroup.CREATE] })
+  @Type(() => LoanDto)
+  declare loan?: LoanDto;
+
   @ApiProperty({ type: 'string', example: '12345678' })
   @IsOptional({ groups: [TransactionDtoGroup.CREATE] })
   @IsUUID('4', { groups: [TransactionDtoGroup.CREATE] })
   declare transferCardId?: string;
 
-  declare transferCard: CardDto;
+  declare transferCard?: CardDto;
 
-  declare transferCardModel: CardModel;
+  declare transferCardModel?: CardModel;
 
   @ApiProperty({ type: 'string', example: '12345678' })
+  @IsOptional({ groups: [TransactionDtoGroup.CREATE] })
   @IsUUID('4', { groups: [TransactionDtoGroup.CREATE] })
-  declare cardId: string;
+  declare cardId?: string;
 
-  declare card: CardDto;
+  declare card?: CardDto;
 
-  declare cardModel: CardModel;
+  declare cardModel?: CardModel;
 
   declare userId: string;
 

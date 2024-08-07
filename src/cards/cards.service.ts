@@ -39,28 +39,41 @@ export class CardsService {
   }
 
   async findAll(userId: string) {
-    const cardInstances = await this.model.findAll({
+    const instance = await this.model.findAll({
       where: { userId },
       limit: 3,
       order: [['createdAt', 'ASC']],
-      attributes: ['id', 'cardHolderName', 'cardNumber', 'expiryDate', 'cvv'],
+      attributes: [
+        'id',
+        'cardHolderName',
+        'cardNumber',
+        'expiryDate',
+        'cvv',
+        'balance',
+      ],
     });
-    return cardInstances;
+    return instance;
   }
 
   async update(data: CardDto) {
     const card = await this.model.findOne({
       where: { id: data.id, userId: data.userId },
-      attributes: ['id', 'cardHolderName', 'cardNumber', 'expiryDate', 'cvv'],
+      attributes: [
+        'id',
+        'cardHolderName',
+        'cardNumber',
+        'expiryDate',
+        'cvv',
+        'balance',
+      ],
     });
     if (!card) {
       throw new NotFoundException();
     }
     const tr = await this.model.sequelize.transaction();
     try {
-      data.pin = await hash(data.pin, 10);
-      delete data.userId;
-      await card.update(data, { transaction: tr });
+      card.pin = await hash(data.pin, 10);
+      await card.save({ transaction: tr });
       await tr.commit();
       return { ...card.toJSON(), pin: undefined };
     } catch (error) {

@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { CardsModule } from './cards/cards.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { LoansModule } from './loans/loans.module';
+import { LoanScheduleModule } from './loan-schedule/loan-schedules.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { TransactionsModule } from './transactions/transactions.module';
     UsersModule,
     CardsModule,
     TransactionsModule,
+    LoansModule,
+    LoanScheduleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

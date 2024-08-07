@@ -16,6 +16,8 @@ import { UserModel } from '../users/user.model';
 import { UserDto } from '../users/dto/user.dto';
 import { TransactionModel } from '../transactions/transaction.model';
 import { TransactionDto } from '../transactions/transaction.dto';
+import { LoanModel } from '../loans/loan.model';
+import { LoanDto } from '../loans/loan.dto';
 
 @Table({ tableName: 'cards', underscored: true })
 export class CardModel extends Model<CardDto, CardDto> {
@@ -50,6 +52,9 @@ export class CardModel extends Model<CardDto, CardDto> {
 
   @HasMany(() => TransactionModel, 'cardId')
   declare transactions: TransactionDto[];
+
+  @HasMany(() => LoanModel)
+  declare loans: LoanDto[];
 
   @CreatedAt
   declare createdAt: string;

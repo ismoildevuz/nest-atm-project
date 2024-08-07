@@ -10,13 +10,13 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request as ExpressRequest } from 'express';
 import { TransactionsService } from './transactions.service';
-import { JwtAuthGuard } from '../guards/jwt.guard';
-import { MyValidationPipe } from '../pipes/validation.pipe';
 import {
   TransactionDto,
   TransactionDtoGroup,
   TransactionPagingDto,
 } from './transaction.dto';
+import { JwtAuthGuard } from '../guards/jwt.guard';
+import { MyValidationPipe } from '../pipes/validation.pipe';
 
 @ApiTags('Transactions')
 @Controller('transactions')

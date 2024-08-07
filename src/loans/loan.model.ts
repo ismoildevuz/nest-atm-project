@@ -8,57 +8,50 @@ import {
   UpdatedAt,
   ForeignKey,
   BelongsTo,
+  HasOne,
+  HasMany,
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
-import { TransactionDto, TransactionTypeEnum } from './transaction.dto';
+import { LoanDto, LoanTypeEnum } from './loan.dto';
 import { UserModel } from '../users/user.model';
 import { UserDto } from '../users/dto/user.dto';
 import { CardModel } from '../cards/card.model';
 import { CardDto } from '../cards/card.dto';
-import { LoanModel } from '../loans/loan.model';
-import { LoanDto } from '../loans/loan.dto';
+import { TransactionModel } from '../transactions/transaction.model';
+import { TransactionDto } from '../transactions/transaction.dto';
 import { LoanScheduleModel } from '../loan-schedule/loan-schedule.model';
 import { LoanScheduleDto } from '../loan-schedule/loan-schedule.dto';
 
-@Table({ tableName: 'transactions', underscored: true })
-export class TransactionModel extends Model<TransactionDto, TransactionDto> {
+@Table({ tableName: 'loans', underscored: true })
+export class LoanModel extends Model<LoanDto, LoanDto> {
   @PrimaryKey
   @Column({ type: DataTypes.UUID })
   declare id: string;
 
   @Column({ type: DataTypes.STRING(32), allowNull: false })
-  declare type: TransactionTypeEnum;
+  declare type: LoanTypeEnum;
+
+  @Column({ type: DataTypes.DATEONLY, allowNull: false })
+  declare date: string;
 
   @Column({ allowNull: false })
   declare amount: number;
 
-  @ForeignKey(() => LoanScheduleModel)
-  @Column({ type: DataTypes.UUID })
-  declare loanScheduleId?: string;
+  @Column({ allowNull: false })
+  declare period: number;
 
-  @BelongsTo(() => LoanScheduleModel)
-  declare loanSchedule?: LoanScheduleDto;
+  @Column({ allowNull: false })
+  declare rate: number;
 
-  @ForeignKey(() => LoanModel)
-  @Column({ type: DataTypes.UUID })
-  declare loanId?: string;
-
-  @BelongsTo(() => LoanModel)
-  declare loan?: LoanDto;
+  @Column({ defaultValue: false })
+  declare closed: boolean;
 
   @ForeignKey(() => CardModel)
-  @Column({ type: DataTypes.UUID })
-  declare transferCardId?: string;
+  @Column({ type: DataTypes.UUID, allowNull: false })
+  declare cardId: string;
 
-  @BelongsTo(() => CardModel, 'transferCardId')
-  declare transferCard?: CardDto;
-
-  @ForeignKey(() => CardModel)
-  @Column({ type: DataTypes.UUID })
-  declare cardId?: string;
-
-  @BelongsTo(() => CardModel, 'cardId')
-  declare card?: CardDto;
+  @BelongsTo(() => CardModel)
+  declare card: CardDto;
 
   @ForeignKey(() => UserModel)
   @Column({ type: DataTypes.UUID, allowNull: false })
@@ -66,6 +59,12 @@ export class TransactionModel extends Model<TransactionDto, TransactionDto> {
 
   @BelongsTo(() => UserModel)
   declare user: UserDto;
+
+  @HasOne(() => TransactionModel)
+  declare transaction: TransactionDto;
+
+  @HasMany(() => LoanScheduleModel)
+  declare loanSchedules: LoanScheduleDto[];
 
   @CreatedAt
   declare createdAt: string;
