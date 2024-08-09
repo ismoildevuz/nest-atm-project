@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Patch,
   Post,
   Request,
@@ -35,6 +36,11 @@ export class CardsController {
   @Get()
   async findAll(@Request() req: ExpressRequest) {
     return await this.cardsService.findAll(req.user.id);
+  }
+
+  @Get(':cardNumber')
+  async findOne(@Param('cardNumber') cardNumber: string) {
+    return await this.cardsService.findOne(cardNumber);
   }
 
   @Patch()

@@ -65,22 +65,26 @@ export class LoanPagingDto {
   declare userId?: string;
 }
 
+export type LoanType = 'annuity' | 'differentiate';
+
 export class LoanDto {
   declare id: string;
 
   @ApiProperty({ type: 'string', example: LoanTypeEnum.DIFFERENTIATE })
+  @IsOptional({ groups: [LoanDtoGroup.CREATE] })
   @IsEnum(LoanTypeEnum, {
     groups: [LoanDtoGroup.CREATE],
     message: `Loan type enum values: ${Object.values(LoanTypeEnum).join(', ')}`,
   })
-  declare type: LoanTypeEnum;
+  declare type?: LoanType;
 
   @ApiProperty({ type: 'string', example: new Date() })
+  @IsOptional({ groups: [LoanDtoGroup.CREATE] })
   @IsDateString(
     { strict: true, strictSeparator: true },
     { groups: [LoanDtoGroup.CREATE] },
   )
-  declare date: string;
+  declare date?: string;
 
   declare amount?: number;
 

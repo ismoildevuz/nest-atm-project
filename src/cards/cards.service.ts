@@ -55,6 +55,14 @@ export class CardsService {
     return instance;
   }
 
+  async findOne(cardNumber: string) {
+    const instance = await this.model.findOne({
+      where: { cardNumber },
+      attributes: ['id', 'cardHolderName', 'cardNumber'],
+    });
+    return instance;
+  }
+
   async update(data: CardDto) {
     const card = await this.model.findOne({
       where: { id: data.id, userId: data.userId },

@@ -16,7 +16,7 @@ import {
   TransactionTypeEnum,
 } from './transaction.dto';
 import { CardModel } from '../cards/card.model';
-import { LoanDto } from '../loans/loan.dto';
+import { LoanDto, LoanType } from '../loans/loan.dto';
 import { LoanScheduleDto } from '../loan-schedule/loan-schedule.dto';
 import { LoanModel } from '../loans/loan.model';
 import { LoanScheduleModel } from '../loan-schedule/loan-schedule.model';
@@ -191,9 +191,13 @@ export class TransactionsService {
     const tr = await this.model.sequelize.transaction();
     try {
       loan.id = randomUUID();
-      loan.date = new Date(loan.date).toJSON();
+      const date = new Date();
+      loan.date = new Date(
+        loan.date || date.setUTCMonth(date.getUTCMonth() + 1),
+      ).toJSON();
       loan.amount = data.amount;
       loan.rate = Number(process.env.LOAN_INTEREST_RATE);
+      loan.type = loan.type || (process.env.LOAN_TYPE as LoanType);
       loan.cardId = data.transferCardId;
       loan.userId = data.userId;
       data.loanId = loan.id;

@@ -23,6 +23,13 @@ import { LoanScheduleModule } from './loan-schedule/loan-schedules.module';
       logging: true,
       retryAttempts: 1,
       autoLoadModels: true,
+      ssl: true,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
       pool: { min: 10, max: 30 },
     }),
     UsersModule,
